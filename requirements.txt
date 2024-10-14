@@ -1,0 +1,8 @@
+torch==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+torchvision==0.18.1 --index-url https://download.pytorch.org/whl/cu121
+torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/cu121
+diffusers==0.20.0
+torch-fidelity
+pytorch_lightning
+transformers==4.30.2
+accelerate
