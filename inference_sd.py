@@ -9,7 +9,6 @@ python inference_sd.py --model-path <path-to-ckpt> \
 
 
 from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion import StableDiffusionPipeline
-
 import os
 from PIL import Image
 import numpy as np
@@ -52,7 +51,7 @@ else:
 
 all_quant_layers = {}
 
-def step_start_callback(step: int, timestep: int, latents: torch.FloatTensor):
+def step_start_callback(step: int, timestep: int):
 
     for name, layer in all_quant_layers.items(): 
         for quantizer in layer.quantizer:
