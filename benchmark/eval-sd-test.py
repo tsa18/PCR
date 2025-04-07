@@ -224,7 +224,8 @@ if __name__ == '__main__':
     if not args.use_ckpt:
         # load pretrained checkpoint
         if args.SDXL:
-            pipeline = MyStableDiffusionXLPipeline.from_pretrained("args.model_path", safety_checker=None, local_files_only = True, use_safetensors=True)
+            print("sdxl")
+            pipeline = MyStableDiffusionXLPipeline.from_pretrained("/DATA/DATANAS1/tangsa/huggingface/models--stabilityai--stable-diffusion-xl-base-1.0/snapshots/f898a3e026e802f68796b95e9702464bac78d76f", safety_checker=None, local_files_only = True, use_safetensors=True)
             pipeline.to("cuda")
 
         else:
@@ -240,7 +241,8 @@ if __name__ == '__main__':
                 layer: LinearQuantHub
                 kargs = {}
                 if args.method == "Separate":
-                    kargs.update({'num_steps': real_sample_steps})
+                    kargs.update({'num_steps': real_sample_steps,
+                                  'relax_interval': (args.relax_interval_s, args.relax_interval_e)})
 
                 layer.register_quantizer(methods[args.method][0](layer, args.linear_w_bit, args.linear_a_bit, **kargs))
                 layer.prepare_hook()
@@ -296,6 +298,7 @@ if __name__ == '__main__':
                 print("start calibrate num:", start)
                 cali_batch = txt_cali[start:start + cali_bs]
                 imgs = pipeline(cali_batch, callback_on_start=step_start_callback, width=width, height=height, num_inference_steps=sampling_steps, guidance_scale=guidance_scale).images
+                # imgs = pipeline(cali_batch, width=width, height=height, num_inference_steps=sampling_steps, guidance_scale=guidance_scale).images
                 for i, img in enumerate(imgs):
                     try:
                         img.save(os.path.join(origin_path, f"{str(i+1+start)}_{process_to_name(cali_batch[i])}.png"))

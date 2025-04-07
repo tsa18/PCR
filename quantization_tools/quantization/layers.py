@@ -467,6 +467,7 @@ class MyStableDiffusionXLPipeline(StableDiffusionXLPipeline):
         crops_coords_top_left: Tuple[int, int] = (0, 0),
         target_size: Optional[Tuple[int, int]] = None,
         max_inference_steps: Optional[int] = None,
+        callback_on_start: Optional[Callable[[int, int, torch.FloatTensor], None]] = None,
     ):
         r"""
         Function invoked when calling the pipeline for generation.
@@ -687,9 +688,12 @@ class MyStableDiffusionXLPipeline(StableDiffusionXLPipeline):
 
         with self.progress_bar(total=num_inference_steps) as progress_bar:
             for i, t in enumerate(timesteps):
+
+                if callback_on_start:
+                    callback_on_start(i, t)
+
                 # expand the latents if we are doing classifier free guidance
                 latent_model_input = torch.cat([latents] * 2) if do_classifier_free_guidance else latents
-
                 latent_model_input = self.scheduler.scale_model_input(latent_model_input, t)
 
                 # predict the noise residual      

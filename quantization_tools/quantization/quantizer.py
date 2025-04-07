@@ -156,8 +156,8 @@ class SdSeparateQuantizer(BaseQuantizer):
 
         # self.relax_t = [] # no relax t 
         self.relax_t = list(range(int(num_steps*relax_interval[0]), int(num_steps*relax_interval[1])+1)) 
-
         self.recon = False
+
 
     
     
