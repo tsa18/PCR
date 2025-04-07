@@ -224,8 +224,7 @@ if __name__ == '__main__':
     if not args.use_ckpt:
         # load pretrained checkpoint
         if args.SDXL:
-            print("sdxl")
-            pipeline = MyStableDiffusionXLPipeline.from_pretrained("/DATA/DATANAS1/tangsa/huggingface/models--stabilityai--stable-diffusion-xl-base-1.0/snapshots/f898a3e026e802f68796b95e9702464bac78d76f", safety_checker=None, local_files_only = True, use_safetensors=True)
+            pipeline = MyStableDiffusionXLPipeline.from_pretrained(args.model_path, safety_checker=None, local_files_only = True, use_safetensors=True)
             pipeline.to("cuda")
 
         else:
